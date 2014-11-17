@@ -12,11 +12,9 @@ This CircularProgressView is a (surprisingly) circular progress bar Android View
 
 To use CircularProgressView you must add it as a dependency in your Gradle build:
 
-(The project is not yet set up in the maven central repo so wait until I do that)
-
 ```groovy
 dependencies {
-    compile 'com.freek:materialcircularprogressview:1.0.0+'
+    compile 'com.github.rahatarmanahmed:circularprogressview:1.0.0'
 }
 ```
 
