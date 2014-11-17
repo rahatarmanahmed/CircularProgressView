@@ -2,7 +2,7 @@
 
 | Indeterminate | Determinate |
 |:-------------:|:-----------:|
-| ![Sample Indeterminate GIF](https://raw.github.com/rahatarmanahmed/MaterialCircularProgressView/master/gif/sampleIndeterminate.gif) | ![Sample Determinate GIF](https://raw.github.com/rahatarmanahmed/MaterialCircularProgressView/master/gif/sampleDeterminate.gif) |
+| ![Sample Indeterminate GIF](https://raw.github.com/rahatarmanahmed/CircularProgressView/master/gif/sampleIndeterminate.gif) | ![Sample Determinate GIF](https://raw.github.com/rahatarmanahmed/CircularProgressView/master/gif/sampleDeterminate.gif) |
 
 ## Description
 
