@@ -21,7 +21,7 @@ dependencies {
 Then add the view to your layout:
 
 ```xml
-<com.freek.materialcircularprogressview.CircularProgressView
+<com.github.rahatarmanahmed.cpv.CircularProgressView
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/progress_view"
     android:layout_width="40dp"
