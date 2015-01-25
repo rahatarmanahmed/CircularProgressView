@@ -26,9 +26,12 @@ public class CircularProgressView extends View {
     private int size = 0;
     private RectF bounds;
 
-    private boolean isIndeterminate, autostartAnimation;
+    private boolean isIndeterminate, autostartAnimation, shouldSpin;
     private float currentProgress, maxProgress, indeterminateSweep, indeterminateRotateOffset;
     private int thickness, color, animDuration, animSteps;
+    private float startAngle;
+    private TypedArray typedArray;
+
 
     public CircularProgressView(Context context) {
         super(context);
@@ -47,10 +50,11 @@ public class CircularProgressView extends View {
 
     protected void init(AttributeSet attrs, int defStyle) {
         // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(
+        typedArray = getContext().obtainStyledAttributes(
                 attrs, R.styleable.CircularProgressView, defStyle, 0);
 
-        a.recycle();
+
+        typedArray.recycle();
 
         initAttributes(attrs, defStyle);
 
@@ -62,19 +66,18 @@ public class CircularProgressView extends View {
 
     private void initAttributes(AttributeSet attrs, int defStyle)
     {
-        final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.CircularProgressView, defStyle, 0);
-
         // Initialize attributes from styleable attributes
-        currentProgress = a.getFloat(R.styleable.CircularProgressView_cpv_progress, 0f);
-        maxProgress = a.getFloat(R.styleable.CircularProgressView_cpv_maxProgress, 100f);
-        thickness = a.getDimensionPixelSize(R.styleable.CircularProgressView_cpv_thickness, 4);
-        isIndeterminate = a.getBoolean(R.styleable.CircularProgressView_cpv_indeterminate, false);
-        autostartAnimation = a.getBoolean(R.styleable.CircularProgressView_cpv_animAutostart, true);
-        color = a.getColor(R.styleable.CircularProgressView_cpv_color, getResources().getColor(R.color.material_blue_500));
-        animDuration = a.getInteger(R.styleable.CircularProgressView_cpv_animDuration, 4000);
-        animSteps = a.getInteger(R.styleable.CircularProgressView_cpv_animSteps, 3);
-        a.recycle();
+        currentProgress = typedArray.getFloat(R.styleable.CircularProgressView_cpv_progress, 0f);
+        maxProgress = typedArray.getFloat(R.styleable.CircularProgressView_cpv_maxProgress, 100f);
+        thickness = typedArray.getDimensionPixelSize(R.styleable.CircularProgressView_cpv_thickness, 4);
+        isIndeterminate = typedArray.getBoolean(R.styleable.CircularProgressView_cpv_indeterminate, false);
+        autostartAnimation = typedArray.getBoolean(R.styleable.CircularProgressView_cpv_animAutostart, true);
+        shouldSpin = typedArray.getBoolean(R.styleable.CircularProgressView_cpv_shouldSpin, true);
+        color = typedArray.getColor(R.styleable.CircularProgressView_cpv_color, getResources().getColor(R.color.material_blue_500));
+        animDuration = typedArray.getInteger(R.styleable.CircularProgressView_cpv_animDuration, 4000);
+        animSteps = typedArray.getInteger(R.styleable.CircularProgressView_cpv_animSteps, 3);
+        startAngle = typedArray.getFloat(R.styleable.CircularProgressView_cpv_startAngle, -90f);
+        typedArray.recycle();
     }
 
     @Override
@@ -226,7 +229,6 @@ public class CircularProgressView extends View {
     }
 
     // Animation related stuff
-    private float startAngle;
     private float actualProgress;
     private ValueAnimator startAngleRotate;
     private ValueAnimator progressAnimator;
@@ -256,18 +258,21 @@ public class CircularProgressView extends View {
         if(!isIndeterminate)
         {
             // The cool 360 swoop animation at the start of the animation
-            startAngle = -90f;
-            startAngleRotate = ValueAnimator.ofFloat(-90f, 270f);
-            startAngleRotate.setDuration(5000);
-            startAngleRotate.setInterpolator(new DecelerateInterpolator(2));
-            startAngleRotate.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    startAngle = (Float) animation.getAnimatedValue();
-                    invalidate();
-                }
-            });
-            startAngleRotate.start();
+            shouldSpin = false;
+            startAngle = typedArray.getFloat(R.styleable.CircularProgressView_cpv_startAngle, -90f);
+            if (shouldSpin) {
+                startAngleRotate = ValueAnimator.ofFloat(-90f, 270f);
+                startAngleRotate.setDuration(5000);
+                startAngleRotate.setInterpolator(new DecelerateInterpolator(2));
+                startAngleRotate.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        startAngle = (Float) animation.getAnimatedValue();
+                        invalidate();
+                    }
+                });
+                startAngleRotate.start();
+            }
 
             // The linear animation shown when progress is updated
             actualProgress = 0f;
