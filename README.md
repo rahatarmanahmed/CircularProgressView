@@ -2,7 +2,7 @@
 
 | Indeterminate | Determinate |
 |:-------------:|:-----------:|
-| ![Sample Indeterminate GIF](https://raw.github.com/rahatarmanahmed/MaterialCircularProgressView/master/gif/sampleIndeterminate.gif) | ![Sample Determinate GIF](https://raw.github.com/rahatarmanahmed/MaterialCircularProgressView/master/gif/sampleDeterminate.gif) |
+| ![Sample Indeterminate GIF](https://raw.github.com/rahatarmanahmed/CircularProgressView/master/gif/sampleIndeterminate.gif) | ![Sample Determinate GIF](https://raw.github.com/rahatarmanahmed/CircularProgressView/master/gif/sampleDeterminate.gif) |
 
 ## Description
 
@@ -21,7 +21,7 @@ dependencies {
 Then add the view to your layout:
 
 ```xml
-<com.freek.materialcircularprogressview.CircularProgressView
+<com.github.rahatarmanahmed.cpv.CircularProgressView
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/progress_view"
     android:layout_width="40dp"
@@ -40,7 +40,7 @@ Then add the view to your layout:
 | cpv_indeterminate | boolean | false | Whether this progress bar is indeterminate or not. If indeterminate, the progress set on this view will not have any effect. |
 | cpv_animDuration | integer | 4000 | The duration of the progress bar animation in milliseconds. If the bar is determinate, it is the duration of the initial spin animation. If indeterminate, it is the duration of all "steps" of the indeterminate animation. |
 | cpv_animSteps | integer | 3 | The number of "steps" in the indeterminate animation (how many times it does the loopy thing before returning to its original position). It is recommended to use an odd number, as even numbers of steps look the same after half the number of steps. |
-| cpv_animAutostart | boolean | true | Whether this progress bar should automatically start animating once it is initialized. |
+| cpv_animAutostart | boolean | false | Whether this progress bar should automatically start animating once it is initialized. |
 
 ## Public Methods
 
