@@ -93,7 +93,7 @@ public class CircularProgressView extends View {
     {
         int paddingLeft = getPaddingLeft();
         int paddingTop = getPaddingTop();
-        bounds = new RectF(paddingLeft+thickness/2, paddingTop+thickness/2, size+paddingLeft-thickness/2, size+paddingTop-thickness/2);
+        bounds = new RectF(paddingLeft+thickness, paddingTop+thickness, size-paddingLeft-thickness, size-paddingTop-thickness);
     }
     
     private void updatePaint()
