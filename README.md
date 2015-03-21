@@ -58,3 +58,14 @@ Then add the view to your layout:
 | setProgress(float) | Sets the current progress of the progress bar. (Will linearly animate the update.) |
 | startAnimation() | Starts the animation of the progress bar. (Alias of resetAnimation().) |
 | resetAnimation() | Resets the animation of the progress bar. |
+
+## Changelog
+
+### 2.0.0
+
+ * Removed unnecessary appcompat dependency from example
+ * Fixed repaint issue by drawing smaller arcs
+
+### 1.0.0
+
+ * Initial release
