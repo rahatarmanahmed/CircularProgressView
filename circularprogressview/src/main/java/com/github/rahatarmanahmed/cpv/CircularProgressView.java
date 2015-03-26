@@ -55,6 +55,9 @@ public class CircularProgressView extends View {
         initAttributes(attrs, defStyle);
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        updatePaint();
+
+        bounds = new RectF();
         
         if(autostartAnimation)
             startAnimation();
@@ -100,7 +103,7 @@ public class CircularProgressView extends View {
     {
         int paddingLeft = getPaddingLeft();
         int paddingTop = getPaddingTop();
-        bounds = new RectF(paddingLeft+thickness, paddingTop+thickness, size-paddingLeft-thickness, size-paddingTop-thickness);
+        bounds.set(paddingLeft+thickness, paddingTop+thickness, size-paddingLeft-thickness, size-paddingTop-thickness);
     }
     
     private void updatePaint()
@@ -114,9 +117,6 @@ public class CircularProgressView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        
-        // Set up the paint
-        updatePaint();
 
         // Draw the arc
         float sweepAngle = (isInEditMode()) ? currentProgress/maxProgress*360 : actualProgress/maxProgress*360;
@@ -160,6 +160,7 @@ public class CircularProgressView extends View {
      */
     public void setThickness(int thickness) {
         this.thickness = thickness;
+        updatePaint();
         updateBounds();
         invalidate();
     }
@@ -178,6 +179,7 @@ public class CircularProgressView extends View {
      */
     public void setColor(int color) {
         this.color = color;
+        updatePaint();
         invalidate();
     }
 
