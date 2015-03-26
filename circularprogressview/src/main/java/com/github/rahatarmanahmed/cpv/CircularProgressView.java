@@ -86,6 +86,13 @@ public class CircularProgressView extends View {
         int height = getMeasuredHeight() - yPad;
         size = (width < height) ? width : height;
         setMeasuredDimension(size + xPad, size + yPad);
+
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        size = (w < h) ? w : h;
         updateBounds();
     }
 
