@@ -14,7 +14,7 @@ To use CircularProgressView you must add it as a dependency in your Gradle build
 
 ```groovy
 dependencies {
-    compile 'com.github.rahatarmanahmed:circularprogressview:2.0.0'
+    compile 'com.github.rahatarmanahmed:circularprogressview:2.0.1'
 }
 ```
 
@@ -61,11 +61,16 @@ Then add the view to your layout:
 
 ## Changelog
 
-### 2.0.0
+### v2.0.1
+
+ * Possible fix for drawArc NullPointerError
+ * Slight performance improvements
+
+### v2.0.0
 
  * Removed unnecessary appcompat dependency from example
  * Fixed repaint issue by drawing smaller arcs
 
-### 1.0.0
+### v1.0.0
 
  * Initial release

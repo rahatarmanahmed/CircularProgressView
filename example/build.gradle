@@ -8,8 +8,8 @@ android {
         applicationId "com.github.rahatarmanahmed.cpv.example"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 2
-        versionName "2.0"
+        versionCode VERSION_CODE.toInteger()
+        versionName VERSION_NAME
     }
     buildTypes {
         release {
