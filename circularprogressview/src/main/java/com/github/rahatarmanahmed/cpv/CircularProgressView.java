@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -68,15 +69,25 @@ public class CircularProgressView extends View {
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.CircularProgressView, defStyle, 0);
 
+        Resources resources = getResources();
+
         // Initialize attributes from styleable attributes
-        currentProgress = a.getFloat(R.styleable.CircularProgressView_cpv_progress, 0f);
-        maxProgress = a.getFloat(R.styleable.CircularProgressView_cpv_maxProgress, 100f);
-        thickness = a.getDimensionPixelSize(R.styleable.CircularProgressView_cpv_thickness, 4);
-        isIndeterminate = a.getBoolean(R.styleable.CircularProgressView_cpv_indeterminate, false);
-        autostartAnimation = a.getBoolean(R.styleable.CircularProgressView_cpv_animAutostart, true);
-        color = a.getColor(R.styleable.CircularProgressView_cpv_color, getResources().getColor(R.color.material_blue_500));
-        animDuration = a.getInteger(R.styleable.CircularProgressView_cpv_animDuration, 4000);
-        animSteps = a.getInteger(R.styleable.CircularProgressView_cpv_animSteps, 3);
+        currentProgress = a.getFloat(R.styleable.CircularProgressView_cpv_progress,
+                resources.getInteger(R.integer.cpv_default_progress));
+        maxProgress = a.getFloat(R.styleable.CircularProgressView_cpv_maxProgress,
+                resources.getInteger(R.integer.cpv_default_max_progress));
+        thickness = a.getDimensionPixelSize(R.styleable.CircularProgressView_cpv_thickness,
+                resources.getDimensionPixelSize(R.dimen.cpv_default_thickness));
+        isIndeterminate = a.getBoolean(R.styleable.CircularProgressView_cpv_indeterminate,
+                resources.getBoolean(R.bool.cpv_default_is_indeterminate));
+        autostartAnimation = a.getBoolean(R.styleable.CircularProgressView_cpv_animAutostart,
+                resources.getBoolean(R.bool.cpv_default_anim_autostart));
+        color = a.getColor(R.styleable.CircularProgressView_cpv_color,
+                resources.getColor(R.color.cpv_default_color));
+        animDuration = a.getInteger(R.styleable.CircularProgressView_cpv_animDuration,
+                resources.getInteger(R.integer.cpv_default_anim_duration));
+        animSteps = a.getInteger(R.styleable.CircularProgressView_cpv_animSteps,
+                resources.getInteger(R.integer.cpv_default_anim_steps));
         a.recycle();
     }
 
