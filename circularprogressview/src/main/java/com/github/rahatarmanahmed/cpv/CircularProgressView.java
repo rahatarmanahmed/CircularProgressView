@@ -47,12 +47,6 @@ public class CircularProgressView extends View {
     }
 
     protected void init(AttributeSet attrs, int defStyle) {
-        // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.CircularProgressView, defStyle, 0);
-
-        a.recycle();
-
         initAttributes(attrs, defStyle);
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
