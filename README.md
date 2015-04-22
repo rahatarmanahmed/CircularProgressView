@@ -14,7 +14,7 @@ To use CircularProgressView you must add it as a dependency in your Gradle build
 
 ```groovy
 dependencies {
-    compile 'com.github.rahatarmanahmed:circularprogressview:2.1.0'
+    compile 'com.github.rahatarmanahmed:circularprogressview:2.2.0'
 }
 ```
 
