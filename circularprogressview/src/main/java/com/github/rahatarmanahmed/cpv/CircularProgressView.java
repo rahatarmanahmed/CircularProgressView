@@ -10,7 +10,9 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Build;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
@@ -85,7 +87,12 @@ public class CircularProgressView extends View {
             TypedValue t = new TypedValue();
             getContext().getTheme().resolveAttribute(accentColor, t, true);
             color = a.getColor(R.styleable.CircularProgressView_cpv_color, t.data);
-        } else {
+        }
+        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            TypedArray t = getContext().obtainStyledAttributes(new int[] { android.R.attr.colorAccent });
+            color = t.getColor(0, resources.getColor(R.color.cpv_default_color));
+        }
+        else {
             //Use default color
             color = a.getColor(R.styleable.CircularProgressView_cpv_color, resources.getColor(R.color.cpv_default_color));
         }
