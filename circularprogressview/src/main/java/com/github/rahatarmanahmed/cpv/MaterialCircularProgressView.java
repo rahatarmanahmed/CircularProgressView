@@ -19,7 +19,7 @@ import android.view.animation.LinearInterpolator;
 /**
  * TODO: document your custom view class.
  */
-public class CircularProgressView extends View {
+public class MaterialCircularProgressView extends View {
 
     private static final float INDETERMINANT_MIN_SWEEP = 15f;
     
@@ -31,17 +31,17 @@ public class CircularProgressView extends View {
     private float currentProgress, maxProgress, indeterminateSweep, indeterminateRotateOffset;
     private int thickness, color, animDuration, animSteps;
 
-    public CircularProgressView(Context context) {
+    public MaterialCircularProgressView(Context context) {
         super(context);
         init(null, 0);
     }
 
-    public CircularProgressView(Context context, AttributeSet attrs) {
+    public MaterialCircularProgressView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
     }
 
-    public CircularProgressView(Context context, AttributeSet attrs, int defStyle) {
+    public MaterialCircularProgressView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
     }
@@ -61,26 +61,30 @@ public class CircularProgressView extends View {
     private void initAttributes(AttributeSet attrs, int defStyle)
     {
         final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.CircularProgressView, defStyle, 0);
+                attrs, R.styleable.MaterialCircularProgressView, defStyle, 0);
 
         Resources resources = getResources();
 
         // Initialize attributes from styleable attributes
-        currentProgress = a.getFloat(R.styleable.CircularProgressView_cpv_progress,
+        currentProgress = a.getFloat(R.styleable.MaterialCircularProgressView_cpv_progress,
                 resources.getInteger(R.integer.cpv_default_progress));
-        maxProgress = a.getFloat(R.styleable.CircularProgressView_cpv_maxProgress,
+        maxProgress = a.getFloat(R.styleable.MaterialCircularProgressView_cpv_maxProgress,
                 resources.getInteger(R.integer.cpv_default_max_progress));
-        thickness = a.getDimensionPixelSize(R.styleable.CircularProgressView_cpv_thickness,
+        thickness = a.getDimensionPixelSize(R.styleable.MaterialCircularProgressView_cpv_thickness,
                 resources.getDimensionPixelSize(R.dimen.cpv_default_thickness));
-        isIndeterminate = a.getBoolean(R.styleable.CircularProgressView_cpv_indeterminate,
+        isIndeterminate = a.getBoolean(R.styleable.MaterialCircularProgressView_cpv_indeterminate,
                 resources.getBoolean(R.bool.cpv_default_is_indeterminate));
-        autostartAnimation = a.getBoolean(R.styleable.CircularProgressView_cpv_animAutostart,
+        autostartAnimation = a.getBoolean(R.styleable.MaterialCircularProgressView_cpv_animAutostart,
                 resources.getBoolean(R.bool.cpv_default_anim_autostart));
-        color = a.getColor(R.styleable.CircularProgressView_cpv_color, 
-                resources.getColor(R.color.cpv_default_color));
-        animDuration = a.getInteger(R.styleable.CircularProgressView_cpv_animDuration,
+         //obtain Accent Color
+        TypedValue accentContainer = new TypedValue();
+        getContext().getTheme().resolveAttribute(R.attr.colorAccent, accentContainer, true);
+
+        color = a.getColor(R.styleable.MaterialCircularProgressView_cpv_color, accentContainer.data);
+
+        animDuration = a.getInteger(R.styleable.MaterialCircularProgressView_cpv_animDuration,
                 resources.getInteger(R.integer.cpv_default_anim_duration));
-        animSteps = a.getInteger(R.styleable.CircularProgressView_cpv_animSteps,
+        animSteps = a.getInteger(R.styleable.MaterialCircularProgressView_cpv_animSteps,
                 resources.getInteger(R.integer.cpv_default_anim_steps));
         a.recycle();
     }
@@ -140,7 +144,7 @@ public class CircularProgressView extends View {
     }
 
     /**
-     * Sets whether this CircularProgressView is indeterminate or not.
+     * Sets whether this MaterialCircularProgressView is indeterminate or not.
      * It will reset the animation if the mode has changed.
      * @param isIndeterminate
      */
