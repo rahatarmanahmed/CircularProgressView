@@ -76,12 +76,8 @@ public class CircularProgressView extends View {
                 resources.getBoolean(R.bool.cpv_default_is_indeterminate));
         autostartAnimation = a.getBoolean(R.styleable.CircularProgressView_cpv_animAutostart,
                 resources.getBoolean(R.bool.cpv_default_anim_autostart));
-        //obtain Accent Color
-        TypedValue accentContainer = new TypedValue();
-        getContext().getTheme().resolveAttribute(R.attr.colorAccent, accentContainer, true);
-
-        color = a.getColor(R.styleable.CircularProgressView_cpv_color, accentContainer.data);
-
+        color = a.getColor(R.styleable.MaterialCircularProgressView_cpv_color, 
+                resources.getColor(R.color.cpv_default_color));
         animDuration = a.getInteger(R.styleable.CircularProgressView_cpv_animDuration,
                 resources.getInteger(R.integer.cpv_default_anim_duration));
         animSteps = a.getInteger(R.styleable.CircularProgressView_cpv_animSteps,
