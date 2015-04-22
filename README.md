@@ -28,6 +28,8 @@ Then add the view to your layout:
     android:layout_height="40dp"
     app:cpv_indeterminate="true"/>
 ```
+### Note for support library users
+If your theme extendes Theme.Material or Theme.AppCompat included in the support library v21+, you can use MaterialCircularProgressView which takes your accent color by default.
 
 ## XML attributes
 
