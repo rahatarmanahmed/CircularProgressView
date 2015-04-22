@@ -10,7 +10,9 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Build;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
@@ -47,12 +49,6 @@ public class CircularProgressView extends View {
     }
 
     protected void init(AttributeSet attrs, int defStyle) {
-        // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.CircularProgressView, defStyle, 0);
-
-        a.recycle();
-
         initAttributes(attrs, defStyle);
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -82,8 +78,25 @@ public class CircularProgressView extends View {
                 resources.getBoolean(R.bool.cpv_default_is_indeterminate));
         autostartAnimation = a.getBoolean(R.styleable.CircularProgressView_cpv_animAutostart,
                 resources.getBoolean(R.bool.cpv_default_anim_autostart));
-        color = a.getColor(R.styleable.CircularProgressView_cpv_color,
-                resources.getColor(R.color.cpv_default_color));
+                
+       //obtain Accent Color
+        int accentColor = getContext().getResources().getIdentifier("colorAccent", "attr", getContext().getPackageName());
+
+        if (accentColor != 0) {
+            //Use accentColor
+            TypedValue t = new TypedValue();
+            getContext().getTheme().resolveAttribute(accentColor, t, true);
+            color = a.getColor(R.styleable.CircularProgressView_cpv_color, t.data);
+        }
+        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            TypedArray t = getContext().obtainStyledAttributes(new int[] { android.R.attr.colorAccent });
+            color = t.getColor(0, resources.getColor(R.color.cpv_default_color));
+        }
+        else {
+            //Use default color
+            color = a.getColor(R.styleable.CircularProgressView_cpv_color, resources.getColor(R.color.cpv_default_color));
+        }
+
         animDuration = a.getInteger(R.styleable.CircularProgressView_cpv_animDuration,
                 resources.getInteger(R.integer.cpv_default_anim_duration));
         animSteps = a.getInteger(R.styleable.CircularProgressView_cpv_animSteps,
