@@ -47,12 +47,6 @@ public class CircularProgressView extends View {
     }
 
     protected void init(AttributeSet attrs, int defStyle) {
-        // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.CircularProgressView, defStyle, 0);
-
-        a.recycle();
-
         initAttributes(attrs, defStyle);
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -82,8 +76,20 @@ public class CircularProgressView extends View {
                 resources.getBoolean(R.bool.cpv_default_is_indeterminate));
         autostartAnimation = a.getBoolean(R.styleable.CircularProgressView_cpv_animAutostart,
                 resources.getBoolean(R.bool.cpv_default_anim_autostart));
-        color = a.getColor(R.styleable.CircularProgressView_cpv_color,
-                resources.getColor(R.color.cpv_default_color));
+                
+       //obtain Accent Color
+        int accentColor = getContext().getResources().getIdentifier("colorAccent", "attr", getContext().getPackageName());
+
+        if (accentColor != 0) {
+            //Use accentColor
+            TypedValue t = new TypedValue();
+            getContext().getTheme().resolveAttribute(accentColor, t, true);
+            color = a.getColor(R.styleable.CircularProgressView_cpv_color, t.data);
+        } else {
+            //Use default color
+            color = a.getColor(R.styleable.CircularProgressView_cpv_color, resources.getColor(R.color.cpv_default_color));
+        }
+
         animDuration = a.getInteger(R.styleable.CircularProgressView_cpv_animDuration,
                 resources.getInteger(R.integer.cpv_default_anim_duration));
         animSteps = a.getInteger(R.styleable.CircularProgressView_cpv_animSteps,

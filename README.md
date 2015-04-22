@@ -36,7 +36,7 @@ Then add the view to your layout:
 | cpv_progress | float | 0 | The current progress of the progress bar. |
 | cpv_maxProgress | float | 100 | The maximum progress of the progress bar; what's considered as 100% of the bar. |
 | cpv_thickness | dimension | 4px | The thickness of the progress bar. |
-| cpv_color | color | Material Blue 500 (#2196F3) | The color of the progress bar. |
+| cpv_color | color | Theme's accent color. If not available, Material Blue 500 (#2196F3) | The color of the progress bar. |
 | cpv_indeterminate | boolean | false | Whether this progress bar is indeterminate or not. If indeterminate, the progress set on this view will not have any effect. |
 | cpv_animDuration | integer | 4000 | The duration of the progress bar animation in milliseconds. If the bar is determinate, it is the duration of the initial spin animation. If indeterminate, it is the duration of all "steps" of the indeterminate animation. |
 | cpv_animSteps | integer | 3 | The number of "steps" in the indeterminate animation (how many times it does the loopy thing before returning to its original position). It is recommended to use an odd number, as even numbers of steps look the same after half the number of steps. |
@@ -60,6 +60,10 @@ Then add the view to your layout:
 | resetAnimation() | Resets the animation of the progress bar. |
 
 ## Changelog
+
+### v2.2.0
+
+ * Now it uses the actual theme's accent color if possible by default.
 
 ### v2.1.0
 
