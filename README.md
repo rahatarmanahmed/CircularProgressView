@@ -14,7 +14,7 @@ To use CircularProgressView you must add it as a dependency in your Gradle build
 
 ```groovy
 dependencies {
-    compile 'com.github.rahatarmanahmed:circularprogressview:2.2.0'
+    compile 'com.github.rahatarmanahmed:circularprogressview:2.2.1'
 }
 ```
 
@@ -60,6 +60,10 @@ Then add the view to your layout:
 | resetAnimation() | Resets the animation of the progress bar. |
 
 ## Changelog
+
+### v2.2.1
+
+ * Fixed ignoring the color #FFFFFF
 
 ### v2.2.0
 
