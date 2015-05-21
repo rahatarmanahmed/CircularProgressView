@@ -33,6 +33,14 @@ public class CircularProgressView extends View {
     private float currentProgress, maxProgress, indeterminateSweep, indeterminateRotateOffset;
     private int thickness, color, animDuration, animSteps;
 
+    private CircularProgressViewListener listener;
+    // Animation related stuff
+    private float startAngle;
+    private float actualProgress;
+    private ValueAnimator startAngleRotate;
+    private ValueAnimator progressAnimator;
+    private AnimatorSet indeterminateAnimator;
+
     public CircularProgressView(Context context) {
         super(context);
         init(null, 0);
@@ -55,7 +63,7 @@ public class CircularProgressView extends View {
         updatePaint();
 
         bounds = new RectF();
-        
+
         if(autostartAnimation)
             startAnimation();
     }
@@ -131,9 +139,9 @@ public class CircularProgressView extends View {
     {
         int paddingLeft = getPaddingLeft();
         int paddingTop = getPaddingTop();
-        bounds.set(paddingLeft+thickness, paddingTop+thickness, size-paddingLeft-thickness, size-paddingTop-thickness);
+        bounds.set(paddingLeft + thickness, paddingTop + thickness, size - paddingLeft - thickness, size - paddingTop - thickness);
     }
-    
+
     private void updatePaint()
     {
         paint.setColor(color);
@@ -170,8 +178,11 @@ public class CircularProgressView extends View {
     public void setIndeterminate(boolean isIndeterminate) {
         boolean reset = this.isIndeterminate == isIndeterminate;
         this.isIndeterminate = isIndeterminate;
-        if(reset)
+        if (reset)
             resetAnimation();
+        if (listener != null) {
+            listener.onModeChanged(isIndeterminate);
+        }
     }
 
     /**
@@ -229,7 +240,6 @@ public class CircularProgressView extends View {
     }
 
     /**
-     *
      * @return current progress
      */
     public float getProgress() {
@@ -238,14 +248,14 @@ public class CircularProgressView extends View {
 
     /**
      * Sets the progress of the progress bar.
+     *
      * @param currentProgress
      */
-    public void setProgress(float currentProgress) {
+    public void setProgress(final float currentProgress) {
         this.currentProgress = currentProgress;
         // Reset the determinate animation to approach the new currentProgress
-        if(!isIndeterminate)
-        {
-            if(progressAnimator != null && progressAnimator.isRunning())
+        if (!isIndeterminate) {
+            if (progressAnimator != null && progressAnimator.isRunning())
                 progressAnimator.cancel();
             progressAnimator = ValueAnimator.ofFloat(actualProgress, currentProgress);
             progressAnimator.setDuration(500);
@@ -257,17 +267,36 @@ public class CircularProgressView extends View {
                     invalidate();
                 }
             });
+            progressAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (listener != null) {
+                        listener.onProgressUpdateEnd(currentProgress);
+                    }
+                }
+            });
+
             progressAnimator.start();
         }
         invalidate();
+        if (listener != null) {
+            listener.onProgressUpdated(currentProgress);
+        }
     }
 
-    // Animation related stuff
-    private float startAngle;
-    private float actualProgress;
-    private ValueAnimator startAngleRotate;
-    private ValueAnimator progressAnimator;
-    private AnimatorSet indeterminateAnimator;
+    /**
+     * @return listener
+     */
+    public CircularProgressViewListener getListener() {
+        return listener;
+    }
+
+    /**
+     * @param listener Pass null if you want to remove it
+     */
+    public void setListener(CircularProgressViewListener listener) {
+        this.listener = listener;
+    }
 
     /**
      * Starts the progress bar animation.
@@ -352,6 +381,9 @@ public class CircularProgressView extends View {
                 }
             });
             indeterminateAnimator.start();
+            if (listener != null) {
+                listener.onAnimationReset();
+            }
         }
 
 
@@ -402,13 +434,13 @@ public class CircularProgressView extends View {
         });
 
         // More overall rotation
-        ValueAnimator rotateAnimator2 = ValueAnimator.ofFloat((step+.5f)*720f/animSteps, (step+1)*720f/animSteps);
-        rotateAnimator2.setDuration(animDuration/animSteps/2);
+        ValueAnimator rotateAnimator2 = ValueAnimator.ofFloat((step + .5f) * 720f / animSteps, (step + 1) * 720f / animSteps);
+        rotateAnimator2.setDuration(animDuration / animSteps / 2);
         rotateAnimator2.setInterpolator(new LinearInterpolator());
         rotateAnimator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-            indeterminateRotateOffset = (Float) animation.getAnimatedValue();
+                indeterminateRotateOffset = (Float) animation.getAnimatedValue();
             }
         });
 
@@ -417,4 +449,16 @@ public class CircularProgressView extends View {
         set.play(backEndRetract).with(rotateAnimator2).after(rotateAnimator1);
         return set;
     }
+
+    public interface CircularProgressViewListener {
+        void onProgressUpdated(float currentProgress);
+
+        void onProgressUpdateEnd(float currentProgress);
+
+        void onAnimationReset();
+
+        void onModeChanged(boolean isIndeterminate);
+    }
+
+
 }
