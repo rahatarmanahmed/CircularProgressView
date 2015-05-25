@@ -25,7 +25,6 @@ public class MainActivity extends Activity {
 
         // Test loading animation
         startAnimationThreadStuff(1000);
-
         final Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

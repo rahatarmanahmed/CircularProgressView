@@ -173,7 +173,7 @@ public class CircularProgressView extends View {
     /**
      * Sets whether this CircularProgressView is indeterminate or not.
      * It will reset the animation if the mode has changed.
-     * @param isIndeterminate
+     * @param isIndeterminate True if indeterminate.
      */
     public void setIndeterminate(boolean isIndeterminate) {
         boolean reset = this.isIndeterminate == isIndeterminate;
@@ -249,7 +249,7 @@ public class CircularProgressView extends View {
     /**
      * Sets the progress of the progress bar.
      *
-     * @param currentProgress
+     * @param currentProgress the new progress.
      */
     public void setProgress(final float currentProgress) {
         this.currentProgress = currentProgress;
@@ -450,15 +450,60 @@ public class CircularProgressView extends View {
         return set;
     }
 
+    /**
+     * Listener interface to provide different callbacks.
+     */
     public interface CircularProgressViewListener {
+        /**
+         * Called when setProgress(float currentProgress) (determinate only)
+         *
+         * @param currentProgress the progress going to.
+         */
         void onProgressUpdated(float currentProgress);
 
+        /**
+         * Called when setProgress(float currentProgress) ends the going-to-progress animation. (Determinate only)
+         *
+         * @param currentProgress The progress went to.
+         */
         void onProgressUpdateEnd(float currentProgress);
 
+        /**
+         * Called when resetAnimation()
+         */
         void onAnimationReset();
 
+        /**
+         * Called when setIndeterminate(boolean)
+         *
+         * @param isIndeterminate true if mode was set to indeterminate, false otherwise.
+         */
         void onModeChanged(boolean isIndeterminate);
     }
 
+    /**
+     * Use this class as Listener when you want to implement not all methods.
+     */
+    public class CircularProgressViewAdapter implements CircularProgressViewListener {
 
+        @Override
+        public void onProgressUpdated(float currentProgress) {
+
+        }
+
+        @Override
+        public void onProgressUpdateEnd(float currentProgress) {
+
+        }
+
+        @Override
+        public void onAnimationReset() {
+
+        }
+
+        @Override
+        public void onModeChanged(boolean isIndeterminate) {
+
+        }
+    }
 }
