@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.github.rahatarmanahmed.cpv.CircularProgressViewAdapter;
 
 
 public class MainActivity extends Activity {
@@ -23,9 +25,31 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         progressView = (CircularProgressView) findViewById(R.id.progress_view);
 
+        // Test the listener with logcat messages
+        progressView.addListener(new CircularProgressViewAdapter() {
+            @Override
+            public void onProgressUpdate(float currentProgress) {
+                Log.d("CPV", "onProgressUpdate: " + currentProgress);
+            }
+
+            @Override
+            public void onProgressUpdateEnd(float currentProgress) {
+                Log.d("CPV", "onProgressUpdateEnd: " + currentProgress);
+            }
+
+            @Override
+            public void onAnimationReset() {
+                Log.d("CPV", "onAnimationReset");
+            }
+
+            @Override
+            public void onModeChanged(boolean isIndeterminate) {
+                Log.d("CPV", "onModeChanged: " + (isIndeterminate ? "indeterminate" : "determinate"));
+            }
+        });
+
         // Test loading animation
         startAnimationThreadStuff(1000);
-
         final Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,9 +69,8 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void startAnimationThreadStuff(long delay)
-    {
-        if(updateThread != null && updateThread.isAlive())
+    private void startAnimationThreadStuff(long delay) {
+        if (updateThread != null && updateThread.isAlive())
             updateThread.interrupt();
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
