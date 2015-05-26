@@ -7,5 +7,7 @@
     <bool name="cpv_default_is_indeterminate">false</bool>
     <bool name="cpv_default_anim_autostart">false</bool>
     <integer name="cpv_default_anim_duration">4000</integer>
+    <integer name="cpv_default_anim_swoop_duration">5000</integer>
+    <integer name="cpv_default_anim_sync_duration">500</integer>
     <integer name="cpv_default_anim_steps">3</integer>
 </resources>

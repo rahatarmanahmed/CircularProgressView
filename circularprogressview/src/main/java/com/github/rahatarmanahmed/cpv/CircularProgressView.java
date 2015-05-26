@@ -34,7 +34,7 @@ public class CircularProgressView extends View {
 
     private boolean isIndeterminate, autostartAnimation;
     private float currentProgress, maxProgress, indeterminateSweep, indeterminateRotateOffset;
-    private int thickness, color, animDuration, animSteps;
+    private int thickness, color, animDuration, animSwoopDuration, animSyncDuration, animSteps;
 
     private List<CircularProgressViewListener> listeners;
     // Animation related stuff
@@ -116,6 +116,10 @@ public class CircularProgressView extends View {
 
         animDuration = a.getInteger(R.styleable.CircularProgressView_cpv_animDuration,
                 resources.getInteger(R.integer.cpv_default_anim_duration));
+        animSwoopDuration = a.getInteger(R.styleable.CircularProgressView_cpv_animSwoopDuration,
+                resources.getInteger(R.integer.cpv_default_anim_swoop_duration));
+        animSyncDuration = a.getInteger(R.styleable.CircularProgressView_cpv_animSyncDuration,
+                resources.getInteger(R.integer.cpv_default_anim_sync_duration));
         animSteps = a.getInteger(R.styleable.CircularProgressView_cpv_animSteps,
                 resources.getInteger(R.integer.cpv_default_anim_steps));
         a.recycle();
@@ -266,7 +270,7 @@ public class CircularProgressView extends View {
             if (progressAnimator != null && progressAnimator.isRunning())
                 progressAnimator.cancel();
             progressAnimator = ValueAnimator.ofFloat(actualProgress, currentProgress);
-            progressAnimator.setDuration(500);
+            progressAnimator.setDuration(animSyncDuration);
             progressAnimator.setInterpolator(new LinearInterpolator());
             progressAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -335,7 +339,7 @@ public class CircularProgressView extends View {
             // The cool 360 swoop animation at the start of the animation
             startAngle = -90f;
             startAngleRotate = ValueAnimator.ofFloat(-90f, 270f);
-            startAngleRotate.setDuration(5000);
+            startAngleRotate.setDuration(animSwoopDuration);
             startAngleRotate.setInterpolator(new DecelerateInterpolator(2));
             startAngleRotate.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -349,7 +353,7 @@ public class CircularProgressView extends View {
             // The linear animation shown when progress is updated
             actualProgress = 0f;
             progressAnimator = ValueAnimator.ofFloat(actualProgress, currentProgress);
-            progressAnimator.setDuration(500);
+            progressAnimator.setDuration(animSyncDuration);
             progressAnimator.setInterpolator(new LinearInterpolator());
             progressAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
