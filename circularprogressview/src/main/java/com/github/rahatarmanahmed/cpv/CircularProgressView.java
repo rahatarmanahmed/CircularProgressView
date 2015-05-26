@@ -17,6 +17,9 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * TODO: document your custom view class.
@@ -33,7 +36,7 @@ public class CircularProgressView extends View {
     private float currentProgress, maxProgress, indeterminateSweep, indeterminateRotateOffset;
     private int thickness, color, animDuration, animSteps;
 
-    private CircularProgressViewListener listener;
+    private List<CircularProgressViewListener> listeners;
     // Animation related stuff
     private float startAngle;
     private float actualProgress;
@@ -57,6 +60,8 @@ public class CircularProgressView extends View {
     }
 
     protected void init(AttributeSet attrs, int defStyle) {
+        listeners = new ArrayList<CircularProgressViewListener>();
+
         initAttributes(attrs, defStyle);
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -163,7 +168,7 @@ public class CircularProgressView extends View {
     }
 
     /**
-     *
+     * Returns the mode of this view (determinate or indeterminate).
      * @return true if this view is in indeterminate mode.
      */
     public boolean isIndeterminate() {
@@ -176,17 +181,20 @@ public class CircularProgressView extends View {
      * @param isIndeterminate True if indeterminate.
      */
     public void setIndeterminate(boolean isIndeterminate) {
+        boolean old = this.isIndeterminate;
         boolean reset = this.isIndeterminate == isIndeterminate;
         this.isIndeterminate = isIndeterminate;
         if (reset)
             resetAnimation();
-        if (listener != null) {
-            listener.onModeChanged(isIndeterminate);
+        if(old != isIndeterminate) {
+            for(CircularProgressViewListener listener : listeners) {
+                listener.onModeChanged(isIndeterminate);
+            }
         }
     }
 
     /**
-     *
+     * Get the thickness of the progress bar arc.
      * @return the thickness of the progress bar arc
      */
     public int getThickness() {
@@ -270,7 +278,7 @@ public class CircularProgressView extends View {
             progressAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    if (listener != null) {
+                    for(CircularProgressViewListener listener : listeners) {
                         listener.onProgressUpdateEnd(currentProgress);
                     }
                 }
@@ -279,23 +287,26 @@ public class CircularProgressView extends View {
             progressAnimator.start();
         }
         invalidate();
-        if (listener != null) {
-            listener.onProgressUpdated(currentProgress);
+        for(CircularProgressViewListener listener : listeners) {
+            listener.onProgressUpdate(currentProgress);
         }
     }
 
     /**
-     * @return listener
+     * Register a CircularProgressViewListener with this View
+     * @param listener The listener to register
      */
-    public CircularProgressViewListener getListener() {
-        return listener;
+    public void addListener(CircularProgressViewListener listener) {
+        if(listener != null)
+            listeners.add(listener);
     }
 
     /**
-     * @param listener Pass null if you want to remove it
+     * Unregister a CircularProgressViewListener with this View
+     * @param listener The listener to unregister
      */
-    public void setListener(CircularProgressViewListener listener) {
-        this.listener = listener;
+    public void removeListener(CircularProgressViewListener listener) {
+        listeners.remove(listener);
     }
 
     /**
@@ -381,7 +392,7 @@ public class CircularProgressView extends View {
                 }
             });
             indeterminateAnimator.start();
-            if (listener != null) {
+            for(CircularProgressViewListener listener : listeners) {
                 listener.onAnimationReset();
             }
         }
@@ -448,62 +459,5 @@ public class CircularProgressView extends View {
         set.play(frontEndExtend).with(rotateAnimator1);
         set.play(backEndRetract).with(rotateAnimator2).after(rotateAnimator1);
         return set;
-    }
-
-    /**
-     * Listener interface to provide different callbacks.
-     */
-    public interface CircularProgressViewListener {
-        /**
-         * Called when setProgress(float currentProgress) (determinate only)
-         *
-         * @param currentProgress the progress going to.
-         */
-        void onProgressUpdated(float currentProgress);
-
-        /**
-         * Called when setProgress(float currentProgress) ends the going-to-progress animation. (Determinate only)
-         *
-         * @param currentProgress The progress went to.
-         */
-        void onProgressUpdateEnd(float currentProgress);
-
-        /**
-         * Called when resetAnimation()
-         */
-        void onAnimationReset();
-
-        /**
-         * Called when setIndeterminate(boolean)
-         *
-         * @param isIndeterminate true if mode was set to indeterminate, false otherwise.
-         */
-        void onModeChanged(boolean isIndeterminate);
-    }
-
-    /**
-     * Use this class as Listener when you want to implement not all methods.
-     */
-    public class CircularProgressViewAdapter implements CircularProgressViewListener {
-
-        @Override
-        public void onProgressUpdated(float currentProgress) {
-
-        }
-
-        @Override
-        public void onProgressUpdateEnd(float currentProgress) {
-
-        }
-
-        @Override
-        public void onAnimationReset() {
-
-        }
-
-        @Override
-        public void onModeChanged(boolean isIndeterminate) {
-
-        }
     }
 }
