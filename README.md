@@ -75,7 +75,17 @@ A [`CircularProgressViewListener`](circularprogressview/src/main/java/com/github
 | onModeChange(boolean) | Called when you switch between indeterminate and determinate modes. |
 
 
+## Known Issues
+
+### CircularProgressView flickers when phone is in battery saving mode
+This happens because battery saving mode automatically ends all Animators, but the ones in CPV run in an endless loop. The best way to work around this right now is to use the native ProgressBar for API >21, since that is when the battery saver mode was introduced. See [this](https://github.com/rahatarmanahmed/CircularProgressView/issues/16#issuecomment-109169040) issue comment on how to accomplish this.
+
+
 ## Changelog
+
+### v2.3.1
+
+ * Fixed memory leak [#12]
 
 ### v2.3.0
 
