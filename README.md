@@ -85,7 +85,7 @@ This happens because battery saving mode automatically ends all Animators, but t
 
 ### v2.3.1
 
- * Fixed memory leak [#12]
+ * Fixed memory leak
 
 ### v2.3.0
 
