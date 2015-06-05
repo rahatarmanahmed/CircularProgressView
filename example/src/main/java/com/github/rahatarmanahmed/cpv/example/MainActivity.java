@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -72,53 +70,34 @@ public class MainActivity extends Activity {
     private void startAnimationThreadStuff(long delay) {
         if (updateThread != null && updateThread.isAlive())
             updateThread.interrupt();
+        // Start animation after a delay so there's no missed frames while the app loads up
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // Start animation after a delay so there's no missed frames while the app loads up
-                progressView.setProgress(0f);
-                progressView.startAnimation(); // Alias for resetAnimation, it's all the same
-                // Run thread to update progress every half second until full
-                updateThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (progressView.getProgress() < progressView.getMaxProgress() && !Thread.interrupted()) {
-                            // Must set progress in UI thread
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    progressView.setProgress(progressView.getProgress() + 10);
-                                }
-                            });
-                            SystemClock.sleep(250);
+                if(!progressView.isIndeterminate()) {
+                    progressView.setProgress(0f);
+                    // Run thread to update progress every quarter second until full
+                    updateThread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while (progressView.getProgress() < progressView.getMaxProgress() && !Thread.interrupted()) {
+                                // Must set progress in UI thread
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressView.setProgress(progressView.getProgress() + 10);
+                                    }
+                                });
+                                SystemClock.sleep(250);
+                            }
                         }
-                    }
-                });
-                updateThread.start();
+                    });
+                    updateThread.start();
+                }
+                // Alias for resetAnimation, it's all the same
+                progressView.startAnimation();
             }
         }, delay);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }
