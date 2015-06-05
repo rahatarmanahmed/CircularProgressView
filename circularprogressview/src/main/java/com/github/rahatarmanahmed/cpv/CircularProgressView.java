@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -463,5 +464,22 @@ public class CircularProgressView extends View {
         set.play(frontEndExtend).with(rotateAnimator1);
         set.play(backEndRetract).with(rotateAnimator2).after(rotateAnimator1);
         return set;
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if(startAngleRotate != null) {
+            startAngleRotate.cancel();
+            startAngleRotate = null;
+        }
+        if(progressAnimator != null) {
+            progressAnimator.cancel();
+            progressAnimator = null;
+        }
+        if(indeterminateAnimator != null) {
+            indeterminateAnimator.cancel();
+            indeterminateAnimator = null;
+        }
     }
 }
