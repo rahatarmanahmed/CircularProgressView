@@ -69,9 +69,6 @@ public class CircularProgressView extends View {
         updatePaint();
 
         bounds = new RectF();
-
-        if(autostartAnimation)
-            startAnimation();
     }
 
     private void initAttributes(AttributeSet attrs, int defStyle)
@@ -464,6 +461,13 @@ public class CircularProgressView extends View {
         set.play(frontEndExtend).with(rotateAnimator1);
         set.play(backEndRetract).with(rotateAnimator2).after(rotateAnimator1);
         return set;
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if(autostartAnimation)
+            startAnimation();
     }
 
     @Override
