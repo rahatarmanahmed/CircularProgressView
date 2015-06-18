@@ -32,7 +32,7 @@ Then add the view to your layout:
 Now just set up in your activity:
 
 ```java
-CircularProgressView progressView = (CircularProgressView)  findViewById(R.id.progress_view);
+CircularProgressView progressView = (CircularProgressView) findViewById(R.id.progress_view);
 progressView.startAnimation();
 ```
 
