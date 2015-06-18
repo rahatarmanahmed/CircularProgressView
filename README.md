@@ -26,7 +26,15 @@ Then add the view to your layout:
     android:id="@+id/progress_view"
     android:layout_width="40dp"
     android:layout_height="40dp"
-    app:cpv_indeterminate="true"/>
+    app:cpv_animAutostart="true"
+    app:cpv_indeterminate="true" />
+```
+
+That's all you need! If you don't want the CircularProgressView to automatically start animating, omit the app:cpv_animAutostart option and start it manually yourself:
+
+```java
+CircularProgressView progressView = (CircularProgressView) findViewById(R.id.progress_view);
+progressView.startAnimation();
 ```
 
 ## XML attributes
