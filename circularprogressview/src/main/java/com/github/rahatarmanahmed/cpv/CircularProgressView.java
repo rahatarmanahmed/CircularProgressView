@@ -61,7 +61,7 @@ public class CircularProgressView extends View {
     }
 
     protected void init(AttributeSet attrs, int defStyle) {
-        listeners = new ArrayList<CircularProgressViewListener>();
+        listeners = new ArrayList<>();
 
         initAttributes(attrs, defStyle);
 
@@ -89,6 +89,8 @@ public class CircularProgressView extends View {
                 resources.getBoolean(R.bool.cpv_default_is_indeterminate));
         autostartAnimation = a.getBoolean(R.styleable.CircularProgressView_cpv_animAutostart,
                 resources.getBoolean(R.bool.cpv_default_anim_autostart));
+        startAngle = a.getFloat(R.styleable.CircularProgressView_cpv_startAngle,
+                resources.getInteger(R.integer.cpv_default_start_angle));
 
         int accentColor = getContext().getResources().getIdentifier("colorAccent", "attr", getContext().getPackageName());
 
