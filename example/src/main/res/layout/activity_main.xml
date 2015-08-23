@@ -1,6 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -13,23 +15,19 @@
         android:id="@+id/native_progress_bar"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:indeterminate="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/native_progress_bar"
-        android:layout_centerHorizontal="true"
         android:text="Native ProgressBar" />
 
     <com.github.rahatarmanahmed.cpv.CircularProgressView
         android:id="@+id/progress_view"
+        android:layout_marginTop="50dp"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:padding="0dp"
         app:cpv_animAutostart="false"
         app:cpv_indeterminate="true"
@@ -47,9 +45,29 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/progress_view_label"
-        android:layout_centerHorizontal="true"
         android:text="Switch to Determinate" />
 
+    <com.github.rahatarmanahmed.cpv.CircularProgressView
+        android:id="@+id/progress_view_determinate"
+        android:layout_marginTop="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="0dp"
+        app:cpv_animAutostart="false"
+        app:cpv_indeterminate="false"
+        app:cpv_startAngle="180"
+        app:cpv_thickness="4dp" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/progress_view_determinate_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CircularProgressView (determinate progress)" />
+
+    <Button
+        android:id="@+id/button_determinate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Progress" />
+
+</LinearLayout>
