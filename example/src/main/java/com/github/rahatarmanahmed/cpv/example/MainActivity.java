@@ -52,29 +52,17 @@ public class MainActivity extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (progressView.isIndeterminate()) {
+                if(progressView.isIndeterminate())
+                {
                     progressView.setIndeterminate(false);
                     button.setText("Switch to indeterminate");
-                } else {
+                }
+                else
+                {
                     progressView.setIndeterminate(true);
                     button.setText("Switch to determinate");
                 }
                 startAnimationThreadStuff(0);
-            }
-        });
-
-        final CircularProgressView determinateProgressView = (CircularProgressView) findViewById(R.id.progress_view_determinate);
-        determinateProgressView.setProgress(60);
-
-        final Button buttonDeterminate = (Button) findViewById(R.id.button_determinate);
-        buttonDeterminate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (determinateProgressView.getProgress() == 100) {
-                    determinateProgressView.setProgress(0);
-                } else {
-                    determinateProgressView.setProgress(determinateProgressView.getProgress() + 10);
-                }
             }
         });
     }
