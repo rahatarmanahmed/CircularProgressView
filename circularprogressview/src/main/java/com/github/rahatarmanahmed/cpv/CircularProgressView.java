@@ -44,6 +44,7 @@ public class CircularProgressView extends View {
     private ValueAnimator startAngleRotate;
     private ValueAnimator progressAnimator;
     private AnimatorSet indeterminateAnimator;
+    private float initialStartAngle;
 
     public CircularProgressView(Context context) {
         super(context);
@@ -89,8 +90,9 @@ public class CircularProgressView extends View {
                 resources.getBoolean(R.bool.cpv_default_is_indeterminate));
         autostartAnimation = a.getBoolean(R.styleable.CircularProgressView_cpv_animAutostart,
                 resources.getBoolean(R.bool.cpv_default_anim_autostart));
-        startAngle = a.getFloat(R.styleable.CircularProgressView_cpv_startAngle,
+        initialStartAngle = a.getFloat(R.styleable.CircularProgressView_cpv_startAngle,
                 resources.getInteger(R.integer.cpv_default_start_angle));
+        startAngle = initialStartAngle;
 
         int accentColor = getContext().getResources().getIdentifier("colorAccent", "attr", getContext().getPackageName());
 
@@ -337,8 +339,8 @@ public class CircularProgressView extends View {
         if(!isIndeterminate)
         {
             // The cool 360 swoop animation at the start of the animation
-            startAngle = -90f;
-            startAngleRotate = ValueAnimator.ofFloat(-90f, 270f);
+            startAngle = initialStartAngle;
+            startAngleRotate = ValueAnimator.ofFloat(startAngle, startAngle + 360);
             startAngleRotate.setDuration(animSwoopDuration);
             startAngleRotate.setInterpolator(new DecelerateInterpolator(2));
             startAngleRotate.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -367,7 +369,6 @@ public class CircularProgressView extends View {
         // Indeterminate animation
         else
         {
-            startAngle = -90f;
             indeterminateSweep = INDETERMINANT_MIN_SWEEP;
             // Build the whole AnimatorSet
             indeterminateAnimator = new AnimatorSet();
