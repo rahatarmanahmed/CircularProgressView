@@ -14,7 +14,7 @@ To use CircularProgressView you must add it as a dependency in your Gradle build
 
 ```groovy
 dependencies {
-    compile 'com.github.rahatarmanahmed:circularprogressview:2.3.2'
+    compile 'com.github.rahatarmanahmed:circularprogressview:2.4.0'
 }
 ```
 
@@ -91,6 +91,14 @@ This happens because battery saving mode automatically ends all Animators, but t
 
 
 ## Changelog
+
+### v2.4.0
+
+ * Added cpv_startAngle attribute
+
+### v2.3.2
+
+ * Fixed CPV stopping when View is recycled
 
 ### v2.3.1
 
