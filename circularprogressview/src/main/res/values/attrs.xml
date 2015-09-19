@@ -10,5 +10,6 @@
         <attr name="cpv_indeterminate" format="boolean" />
         <attr name="cpv_animAutostart" format="boolean" />
         <attr name="cpv_animSteps" format="integer" />
+        <attr name="cpv_startAngle" format="float" />
     </declare-styleable>
 </resources>

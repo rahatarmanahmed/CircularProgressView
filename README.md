@@ -51,6 +51,7 @@ progressView.startAnimation();
 | cpv_animSyncDuration | integer | 500 | The duration of the determinate progress update animation. When you use `setUpdate(int)`, this is how long it takes for the view to finish animating to that progress. (Determinate only) |
 | cpv_animSteps | integer | 3 | The number of "steps" in the indeterminate animation (how many times it does the loopy thing before returning to its original position). It is recommended to use an odd number, as even numbers of steps look the same after half the number of steps. |
 | cpv_animAutostart | boolean | false | Whether this progress bar should automatically start animating once it is initialized. |
+| cpv_startAngle | float | 0 | The starting angle for progress bar. (Determinate only) |
 
 ## Public Methods
 
