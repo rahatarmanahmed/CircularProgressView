@@ -476,6 +476,10 @@ public class CircularProgressView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        cancel();
+    }
+
+    public void cancel() {
         if(startAngleRotate != null) {
             startAngleRotate.cancel();
             startAngleRotate = null;
@@ -489,4 +493,15 @@ public class CircularProgressView extends View {
             indeterminateAnimator = null;
         }
     }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == View.VISIBLE) {
+            resetAnimation();
+        } else if (visibility == View.GONE || visibility == View.INVISIBLE) {
+            cancel();
+        }
+    }
+
 }
