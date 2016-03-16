@@ -69,6 +69,7 @@ progressView.startAnimation();
 | setProgress(float) | Sets the current progress of the progress bar. (Will linearly animate the update.) |
 | startAnimation() | Starts the animation of the progress bar. (Alias of resetAnimation().) |
 | resetAnimation() | Resets the animation of the progress bar. |
+| stopAnimation() | Stops the animation of the progress bar. |
 | addListener(CircularProgressViewListener) | Registers a CircularProgressViewListener with this view. |
 | removeListener(CircularProgressViewListener) | Unregisters a CircularProgressViewListener with this view. |
 
