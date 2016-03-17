@@ -405,6 +405,25 @@ public class CircularProgressView extends View {
 
     }
 
+    /**
+     * Stops the animation
+     */
+
+    public void stopAnimation() {
+        if(startAngleRotate != null) {
+            startAngleRotate.cancel();
+            startAngleRotate = null;
+        }
+        if(progressAnimator != null) {
+            progressAnimator.cancel();
+            progressAnimator = null;
+        }
+        if(indeterminateAnimator != null) {
+            indeterminateAnimator.cancel();
+            indeterminateAnimator = null;
+        }
+    }
+
     // Creates the animators for one step of the animation
     private AnimatorSet createIndeterminateAnimator(float step)
     {
@@ -476,17 +495,20 @@ public class CircularProgressView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(startAngleRotate != null) {
-            startAngleRotate.cancel();
-            startAngleRotate = null;
-        }
-        if(progressAnimator != null) {
-            progressAnimator.cancel();
-            progressAnimator = null;
-        }
-        if(indeterminateAnimator != null) {
-            indeterminateAnimator.cancel();
-            indeterminateAnimator = null;
+        stopAnimation();
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        int currentVisibility = getVisibility();
+        super.setVisibility(visibility);
+        if (visibility != currentVisibility) {
+            if (visibility == View.VISIBLE){
+                resetAnimation();
+            } else if (visibility == View.GONE || visibility == View.INVISIBLE) {
+                stopAnimation();
+            }
         }
     }
+
 }
