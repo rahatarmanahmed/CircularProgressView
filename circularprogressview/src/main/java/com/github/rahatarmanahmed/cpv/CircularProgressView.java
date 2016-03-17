@@ -500,11 +500,14 @@ public class CircularProgressView extends View {
 
     @Override
     public void setVisibility(int visibility) {
+        int currentVisibility = getVisibility();
         super.setVisibility(visibility);
-        if (visibility == View.VISIBLE) {
-            resetAnimation();
-        } else if (visibility == View.GONE || visibility == View.INVISIBLE) {
-            stopAnimation();
+        if (visibility != currentVisibility) {
+            if (visibility == View.VISIBLE){
+                resetAnimation();
+            } else if (visibility == View.GONE || visibility == View.INVISIBLE) {
+                stopAnimation();
+            }
         }
     }
 
