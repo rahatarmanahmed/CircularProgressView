@@ -14,7 +14,7 @@ To use CircularProgressView you must add it as a dependency in your Gradle build
 
 ```groovy
 dependencies {
-    compile 'com.github.rahatarmanahmed:circularprogressview:2.4.0'
+    compile 'com.github.rahatarmanahmed:circularprogressview:2.5.0'
 }
 ```
 
@@ -92,6 +92,11 @@ This happens because battery saving mode automatically ends all Animators, but t
 
 
 ## Changelog
+
+### v2.5.0
+
+ * Added `stopAnimation()` method
+ * Fixed view animating while not visible. Setting visibility to GONE or INVISIBLE will stop the animation. Setting to VISIBLE will restart it.
 
 ### v2.4.0
 
