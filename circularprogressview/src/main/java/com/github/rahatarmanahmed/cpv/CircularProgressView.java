@@ -12,7 +12,6 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -29,13 +28,13 @@ public class CircularProgressView extends View {
 
     private static final float INDETERMINANT_MIN_SWEEP = 15f;
     
-    private Paint paint;
+    private Paint paint, bgPaint;
     private int size = 0;
     private RectF bounds;
 
     private boolean isIndeterminate, autostartAnimation;
     private float currentProgress, maxProgress, indeterminateSweep, indeterminateRotateOffset;
-    private int thickness, color, animDuration, animSwoopDuration, animSyncDuration, animSteps;
+    private int thickness, bgThickness, color, bgColor, animDuration, animSwoopDuration, animSyncDuration, animSteps;
 
     private List<CircularProgressViewListener> listeners;
     // Animation related stuff
@@ -68,6 +67,8 @@ public class CircularProgressView extends View {
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         updatePaint();
+        bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        updateBgPaint();
 
         bounds = new RectF();
     }
@@ -86,6 +87,8 @@ public class CircularProgressView extends View {
                 resources.getInteger(R.integer.cpv_default_max_progress));
         thickness = a.getDimensionPixelSize(R.styleable.CircularProgressView_cpv_thickness,
                 resources.getDimensionPixelSize(R.dimen.cpv_default_thickness));
+        bgThickness = a.getDimensionPixelSize(R.styleable.CircularProgressView_cpv_bgThickness,
+                resources.getDimensionPixelSize(R.dimen.cpv_default_bg_thickness));
         isIndeterminate = a.getBoolean(R.styleable.CircularProgressView_cpv_indeterminate,
                 resources.getBoolean(R.bool.cpv_default_is_indeterminate));
         autostartAnimation = a.getBoolean(R.styleable.CircularProgressView_cpv_animAutostart,
@@ -110,10 +113,34 @@ public class CircularProgressView extends View {
         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             TypedArray t = getContext().obtainStyledAttributes(new int[] { android.R.attr.colorAccent });
             color = t.getColor(0, resources.getColor(R.color.cpv_default_color));
+            t.recycle();
         }
         else {
             //Use default color
             color = resources.getColor(R.color.cpv_default_color);
+        }
+
+        int accentPrimaryDark = getContext().getResources().getIdentifier("colorPrimaryDark", "attr", getContext().getPackageName());
+
+        // If color explicitly provided
+        if (a.hasValue(R.styleable.CircularProgressView_cpv_bgColor)) {
+            bgColor = a.getColor(R.styleable.CircularProgressView_cpv_bgColor, resources.getColor(R.color.cpv_default_bg_color));
+        }
+        // If using support library v7 accentColor
+        else if(accentPrimaryDark != 0) {
+            TypedValue t = new TypedValue();
+            getContext().getTheme().resolveAttribute(accentPrimaryDark, t, true);
+            bgColor = t.data;
+        }
+        // If using native accentColor (SDK >21)
+        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            TypedArray t = getContext().obtainStyledAttributes(new int[] { android.R.attr.colorPrimaryDark });
+            bgColor = t.getColor(0, resources.getColor(R.color.cpv_default_bg_color));
+            t.recycle();
+        }
+        else {
+            //Use default color
+            bgColor = resources.getColor(R.color.cpv_default_bg_color);
         }
 
         animDuration = a.getInteger(R.styleable.CircularProgressView_cpv_animDuration,
@@ -150,7 +177,8 @@ public class CircularProgressView extends View {
     {
         int paddingLeft = getPaddingLeft();
         int paddingTop = getPaddingTop();
-        bounds.set(paddingLeft + thickness, paddingTop + thickness, size - paddingLeft - thickness, size - paddingTop - thickness);
+        int maxThickness = Math.max(thickness, bgThickness);
+        bounds.set(paddingLeft + maxThickness, paddingTop + maxThickness, size - paddingLeft - maxThickness, size - paddingTop - maxThickness);
     }
 
     private void updatePaint()
@@ -161,9 +189,22 @@ public class CircularProgressView extends View {
         paint.setStrokeCap(Paint.Cap.BUTT);
     }
 
+    private void updateBgPaint()
+    {
+        bgPaint.setColor(bgColor);
+        bgPaint.setStyle(Paint.Style.STROKE);
+        bgPaint.setStrokeWidth(bgThickness);
+        bgPaint.setStrokeCap(Paint.Cap.BUTT);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        if (bgThickness > 0) {
+            // Draw the background circle
+            canvas.drawArc(bounds, 0f, 360f, false, bgPaint);
+        }
 
         // Draw the arc
         float sweepAngle = (isInEditMode()) ? currentProgress/maxProgress*360 : actualProgress/maxProgress*360;
@@ -219,6 +260,25 @@ public class CircularProgressView extends View {
     }
 
     /**
+     * Get the thickness of the progress bar arc in the background.
+     * @return the thickness of the progress bar arc in the background
+     */
+    public int getBgThickness() {
+        return thickness;
+    }
+
+    /**
+     * Sets the thickness of the progress bar arc in the background.
+     * @param bgThickness the thickness of the progress bar arc in the background
+     */
+    public void setBgThickness(int bgThickness) {
+        this.bgThickness = bgThickness;
+        updateBgPaint();
+        updateBounds();
+        invalidate();
+    }
+
+    /**
      *
      * @return the color of the progress bar
      */
@@ -232,6 +292,23 @@ public class CircularProgressView extends View {
      */
     public void setColor(int color) {
         this.color = color;
+        updatePaint();
+        invalidate();
+    }
+
+    /**
+     * @return the background color of the progress bar
+     */
+    public int getBgColor() {
+        return bgColor;
+    }
+
+    /**
+     * Sets the background color of the progress bar.
+     * @param bgColor the background color of the progress bar
+     */
+    public void setBgColor(int bgColor) {
+        this.bgColor = bgColor;
         updatePaint();
         invalidate();
     }
