@@ -6,7 +6,9 @@
         <attr name="cpv_animSwoopDuration" format="integer" />
         <attr name="cpv_animSyncDuration" format="integer" />
         <attr name="cpv_color" format="color"/>
+        <attr name="cpv_bgColor" format="color"/>
         <attr name="cpv_thickness" format="dimension"/>
+        <attr name="cpv_bgThickness" format="dimension"/>
         <attr name="cpv_indeterminate" format="boolean" />
         <attr name="cpv_animAutostart" format="boolean" />
         <attr name="cpv_animSteps" format="integer" />

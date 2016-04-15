@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="cpv_default_color">#2196F3</color>
+    <color name="cpv_default_bg_color">#AAA</color>
     <dimen name="cpv_default_thickness">4dp</dimen>
+    <dimen name="cpv_default_bg_thickness">0dp</dimen>
     <integer name="cpv_default_progress">0</integer>
     <integer name="cpv_default_max_progress">100</integer>
     <bool name="cpv_default_is_indeterminate">false</bool>
