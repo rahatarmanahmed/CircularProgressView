@@ -1,1 +1,1 @@
-include ':circularprogressview', ':example'
+include ':circularprogressview', ':example', ':nineoldandroids'
