@@ -188,7 +188,7 @@ public class CircularProgressView extends View {
      */
     public void setIndeterminate(boolean isIndeterminate) {
         boolean old = this.isIndeterminate;
-        boolean reset = this.isIndeterminate == isIndeterminate;
+        boolean reset = this.isIndeterminate != isIndeterminate;
         this.isIndeterminate = isIndeterminate;
         if (reset)
             resetAnimation();
